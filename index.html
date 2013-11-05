@@ -11,6 +11,12 @@
 <script type="text/javascript" charset="utf-8" src="js/jquery.touchswipe.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/rmc.js"></script>
 <script>
+RMC.add_evnet('show','r-gps','run_gps');
+function run_gps()
+{
+	onDeviceReady();
+}
+
 var watchID = null;
 //document.addEventListener("deviceready", onDeviceReady, false);
 //function onDeviceReady() {
@@ -45,8 +51,23 @@ function onSuccess(position) {
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        /*alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');*/
+        var div = document.getElementById("error_div");      
+        if(error.code=='3'){
+        	
+        	div.innerHTML ="timeout"+"<br>";
+        }else{
+        	/*alert('code: '    + error.code    + '\n' +
+                    'message: ' + error.message + '\n');*/
+        	div.innerHTML +="code:"+error.code+" message="+error.message+"<br>";
+        }
+    }
+    function gg()
+    {
+    	 var div = document.getElementById("error_div");      
+    	 div.innerHTML +="run GPS"+"<br>";
+    	onDeviceReady();
     }
 </script>
 </head>
@@ -75,8 +96,13 @@ function onSuccess(position) {
 <div class="header" data-position="true">GPS</div>
 <div class="content">
 <button class="btn" onclick="RMC.backpage('main')">回首頁</button>
+<p>
+<button class="btn" onclick="gg()">執行GPS</button>
+</p>
 <p id="geolocation">Watching geolocation...</p>
 <div id="myDiv"></div>
+<hr>
+<div id="error_div"></div>
 </div>
 </div>
 <div class="page" id="googlemap">

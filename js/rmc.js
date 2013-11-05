@@ -57,8 +57,15 @@ var RMC={
 			if(document.getElementById(id)){
 				if(type==undefined){//alert(RMC._NOWID);
 					RMC._BACKID=RMC._NOWID;
-					$('#'+id).css({left:RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},1000);
-					$('#'+RMC._NOWID).animate({left:'-'+RMC._SW+'px','z-index':1},1000,function(){
+					$('#'+id).css({left:RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},800,function(){
+						//alert(RMC._PAGE_EVENT['show'][id]);
+						if(RMC._PAGE_EVENT['show'][id]!=undefined){
+							//alert(RMC._PAGE_EVENT['show'][id]);
+							eval(RMC._PAGE_EVENT['show'][id]+"();");
+						}
+						
+					});
+					$('#'+RMC._NOWID).animate({left:'-'+RMC._SW+'px','z-index':1},800,function(){
 						$(this).css('display','none');
 					});
 				}else{//alert(id);
@@ -109,11 +116,17 @@ var RMC={
 				});
 			}
 		},
+		//執行cordova
 		runCordova:function(){
 			document.addEventListener("deviceready", RMC.deviceReady, false);
 		},
+		//cordova執行完成
 		deviceReady:function(){
 			this._CORDOVA_STATUS=true;
+		},
+		//加入事件
+		add_evnet:function(type,id,fun){
+			this._PAGE_EVENT[type][id]=fun;
 		}
 };
 //cordova 參數
