@@ -11,12 +11,78 @@
 <script type="text/javascript" charset="utf-8" src="js/jquery.touchswipe.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/rmc.js"></script>
 <script>
+var watchID = null;
+//document.addEventListener("deviceready", onDeviceReady, false);
+//function onDeviceReady() {
+    //測試GPS
+	//navigator.geolocation.getCurrentPosition(onSuccess, onError);
+//}
+function onDeviceReady() {
+    // Throw an error if no update is received every 30 seconds
+    var options = { timeout: 30000 };
+    watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
+}
+
+// onSuccess Geolocation
+//
+function onSuccess(position) {
+    var element = document.getElementById('geolocation');
+    element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                        'Longitude: ' + position.coords.longitude     + '<br />' +
+                        '<hr />'      + element.innerHTML;
+                        
+    var div = document.getElementById('myDiv');
+
+    div.innerHTML = 'Latitude: '             + position.coords.latitude         + '<br/>' +
+                    'Longitude: '            + position.coords.longitude        + '<br/>' +
+                    'Altitude: '             + position.coords.altitude         + '<br/>' +
+                    'Accuracy: '             + position.coords.accuracy         + '<br/>' +
+                    'Altitude Accuracy: '    + position.coords.altitudeAccuracy + '<br/>' +
+                    'Heading: '              + position.coords.heading          + '<br/>' +
+                    'Speed: '                + position.coords.speed            + '<br/>';                    
+}
+
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+              'message: ' + error.message + '\n');
+    }
 </script>
 </head>
 <body>
-<div class="page" id="vv">
+<div class="page" id="main">
 <div class="header" data-position="true">測試一下</div>
 <div class="content">
+
+<button class="btn" onclick="RMC.changepage('r-gps')">測試</button>
+<div class="listview">
+<li>adfadsf</li>
+<li>adfadsf</li>
+<li>adfadsf</li>
+<li>to upload_page</li>
+</div>
+<ul class="listview">
+<li>adfadsf</li>
+<li>adfadsf</li>
+<li>adfadsf</li>
+<li>adfadsf</li>
+</ul>
+
+</div>
+</div>
+<div class="page" id="r-gps">
+<div class="header" data-position="true">GPS</div>
+<div class="content">
+<button class="btn" onclick="RMC.backpage('main')">回首頁</button>
+<p id="geolocation">Watching geolocation...</p>
+<div id="myDiv"></div>
+</div>
+</div>
+<div class="page" id="googlemap">
+<div class="header">LBS</div>
+<div class="content">
+<button class="btn" onclick="RMC.backpage('main')">回首頁</button>
 </div>
 </div>
 </body>

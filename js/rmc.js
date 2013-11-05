@@ -5,8 +5,10 @@ var RMC={
 		_NOWID:'',//現在使用的ID
 		_BACKID:'',//上一次使用的ID
 		_PAGEHISTORY:[],//記錄頁
+		_CORDOVA_STATUS:false,//cordova status
+		_PAGE_EVENT:{'hidebefore':{},'hider':{},'showbefore':{},'show':{}},//事件 
 		//初始化
-		create:function(){
+		create:function(c){
 			RMC._SW=$(window).width();
 			RMC._SH=$(window).height();//alert(RMC._SW+' -- '+RMC._SH);
 			var HP=false;//header position
@@ -47,14 +49,16 @@ var RMC={
 			});//alert(RMC._NOWID);
 			$('#'+RMC._NOWID).css({'display':''});
 			//$('#vv').css('display','');
+			RMC.runCordova();//if(c!=undefined) RMC.runCordova();
 		},
 		//換頁
+		changePage:function(id,type){RMC.changepage(id,type);},
 		changepage:function(id,type){
 			if(document.getElementById(id)){
 				if(type==undefined){//alert(RMC._NOWID);
 					RMC._BACKID=RMC._NOWID;
-					$('#'+id).css({left:RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},500);
-					$('#'+RMC._NOWID).animate({left:'-'+RMC._SW+'px','z-index':1},500,function(){
+					$('#'+id).css({left:RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},1000);
+					$('#'+RMC._NOWID).animate({left:'-'+RMC._SW+'px','z-index':1},1000,function(){
 						$(this).css('display','none');
 					});
 				}else{//alert(id);
@@ -68,6 +72,7 @@ var RMC={
 			}
 		},
 		//上一頁
+		backPage:function(){RMC.backpage();},
 		backpage:function(){
 			if(RMC._BACKID!=''){
 				$('#'+RMC._BACKID).css({left:'-'+RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},500);
@@ -103,9 +108,17 @@ var RMC={
 					alert('right');
 				});
 			}
+		},
+		runCordova:function(){
+			document.addEventListener("deviceready", RMC.deviceReady, false);
+		},
+		deviceReady:function(){
+			this._CORDOVA_STATUS=true;
 		}
 };
+//cordova 參數
 $(document).ready(function(){
 	RMC.create();
 	//document.addEventListener("deviceready",deviceReady,false);
+	//
 });
