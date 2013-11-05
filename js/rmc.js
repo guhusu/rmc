@@ -57,6 +57,12 @@ var RMC={
 			if(document.getElementById(id)){
 				if(type==undefined){//alert(RMC._NOWID);
 					RMC._BACKID=RMC._NOWID;
+					if(RMC._PAGE_EVENT['hidebefore'][RMC._BACKID]!=undefined){
+						eval(RMC._PAGE_EVENT['hidebefore'][RMC._BACKID]+"();");
+					}
+					if(RMC._PAGE_EVENT['showbefore'][id]!=undefined){
+						eval(RMC._PAGE_EVENT['showbefore'][id]+"();");
+					}
 					$('#'+id).css({left:RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},800,function(){
 						//alert(RMC._PAGE_EVENT['show'][id]);
 						if(RMC._PAGE_EVENT['show'][id]!=undefined){
@@ -67,12 +73,28 @@ var RMC={
 					});
 					$('#'+RMC._NOWID).animate({left:'-'+RMC._SW+'px','z-index':1},800,function(){
 						$(this).css('display','none');
+						if(RMC._PAGE_EVENT['hide'][RMC._BACKID]!=undefined){
+							eval(RMC._PAGE_EVENT['hide'][RMC._BACKID]+"();");
+						}
 					});
 				}else{//alert(id);
 					//返回
-					$('#'+id).css({left:'-'+RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},500);
-					$('#'+RMC._NOWID).animate({left:RMC._SW+'px','z-index':1},500,function(){
+					if(RMC._PAGE_EVENT['hidebefore'][RMC._NOWID]!=undefined){
+						eval(RMC._PAGE_EVENT['hidebefore'][RMC._NOWID]+"();");
+					}
+					if(RMC._PAGE_EVENT['showbefore'][id]!=undefined){
+						eval(RMC._PAGE_EVENT['showbefore'][id]+"();");
+					}
+					$('#'+id).css({left:'-'+RMC._SW+'px','z-index':2,'display':''}).animate({left:'0px'},800,function(){
+						if(RMC._PAGE_EVENT['show'][id]!=undefined){
+							eval(RMC._PAGE_EVENT['show'][id]+"();");
+						}
+					});
+					$('#'+RMC._NOWID).animate({left:RMC._SW+'px','z-index':1},800,function(){
 						$(this).css('display','none');
+						if(RMC._PAGE_EVENT['hide'][RMC._NOWID]!=undefined){
+							eval(RMC._PAGE_EVENT['hide'][RMC._NOWID]+"();");
+						}
 					});
 				}
 				RMC._NOWID=id;
